@@ -1,4 +1,4 @@
-def db_wrtr(hotels_DB_refactor):
+def connnector():
     try:
         import time
         import mysql.connector
@@ -26,20 +26,28 @@ def db_wrtr(hotels_DB_refactor):
             cursor = conn.cursor() 
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
-
-        try:        
-            update_table(conn, cursor, hotels_DB_refactor)
-        except Exception as ex:
-            print(f"45_writerr__{ex}")                 
- 
-        try:
-            cursor.close()
-            conn.close()
-        except Error as e:
-            print(f"Error connecting to MySQL: {e}")
     except Exception as ex:
-        print(f"55_writerr__{ex}")
-   
+        print(f"30_writerr__{ex}")
+
+    return conn, cursor
+
+def db_wrtr(hotels_DB_refactor):
+    from mysql.connector import connect, Error 
+    try:
+        conn, cursor = connnector()
+    except:
+        pass
+
+    try:        
+        update_table(conn, cursor, hotels_DB_refactor)
+    except Exception as ex:
+        print(f"45_writerr__{ex}")                 
+
+    try:
+        cursor.close()
+        conn.close()
+    except Error as e:
+        print(f"Error connecting to MySQL: {e}")   
 
     return print("refactor upz_hotels was done successful!")
 
@@ -47,19 +55,29 @@ def update_table(conn, cursor, total):
     print("update_table start")
     try:
         update_query = "UPDATE upz_hotels SET fotos = %s, description = %s, facility = %s, otziv = %s, room = %s WHERE id = %s"
-        batch_size = 400
+        batch_size = 500
         batch_values = []
 
-        for item in total:
+        for i, item in enumerate(total):
             value = (item.get("fotos"), item.get("description"), item.get("facility"), item.get("otziv"), item.get("room"), item.get("id"))
             batch_values.append(value)
 
             if len(batch_values) >= batch_size:
                 try:
-                    cursor.executemany(update_query, batch_values)
-                    conn.commit()
-                    batch_values = []
-                    print("Success batch...")
+                    for _ in range(5):
+                        try:                        
+                            cursor.executemany(update_query, batch_values)
+                            conn.commit()
+                            batch_values = []
+                            print(f"Success batch__{i}")
+                            break
+                        except:
+                            try:
+                                conn, cursor = connnector()
+                                continue
+                            except:
+                                pass
+
                 except Exception as ex:
                     print(f"Error executing update query: {ex}")
                     insert_rows_individually(conn, cursor, update_query, batch_values)
@@ -67,9 +85,20 @@ def update_table(conn, cursor, total):
 
         if batch_values:
             try:
-                cursor.executemany(update_query, batch_values)
-                conn.commit()       
-                print("Success batch last...")
+                for _ in range(5):
+                    try:                        
+                        cursor.executemany(update_query, batch_values)
+                        conn.commit()
+                        batch_values = []
+                        print(f"Success batch__{len(total)}")
+                        break
+                    except:
+                        try:
+                            conn, cursor = connnector()
+                            continue
+                        except:
+                            pass
+
             except Exception as ex:
                 print(f"Error executing update query: {ex}")
                 insert_rows_individually(conn, cursor, update_query, batch_values)      
