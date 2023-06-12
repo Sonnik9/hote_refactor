@@ -1,13 +1,11 @@
-certifi                2023.5.7
-charset-normalizer     2.0.12
-idna                   3.4
-mysql-connector-python 8.0.33
-numpy                  1.24.3
-pip                    23.0.1
-protobuf               3.20.3
-Pygments               2.15.1
-pyperclip              1.8.2
-setuptools             66.1.1
-soupsieve              2.4.1
-tqdm                   4.65.0
-urllib3                1.26.15
+certifi==2023.5.7
+charset-normalizer==2.0.12
+idna==3.4
+numpy==1.24.3
+mysql-connector-python==8.0.33
+protobuf==3.20.3
+Pygments==2.15.1
+pyperclip==1.8.2
+requests==2.30.0
+soupsieve==2.4.1
+tqdm==4.65.0
