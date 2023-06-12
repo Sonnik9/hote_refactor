@@ -1,0 +1,11 @@
+REader connection established
+326859
+foto_len___161657
+descr_len__108033
+faci_len___158640
+rew_len___105411
+rooms_len___133953
+blocks_len___133958
+room_total_len___ 133846
+data_DB _____{'id': 1, 'hotel_id': 5637893, 'url': 'https://www.booking.com/hotel/uz/hilton-tashkent-city.html', 'fotos': 1, 'description': 1, 'facility': 1, 'otziv': 1, 'room': 1}
+data_DB _____{'id': 326859, 'hotel_id': 8415081, 'url': 'https://www.booking.com/hotel/uz/wellness-park-i-samarkand.html', 'fotos': 1, 'description': 1, 'facility': 1, 'otziv': 0, 'room': 0}
